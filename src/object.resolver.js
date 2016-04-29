@@ -80,12 +80,14 @@ export default class ObjectResolver extends Resolver {
 			else if (PropertyResolver.regex().test(vKey))
 			{
 				var propKeyRes = PropertyResolver.toProperty(vKey, object, node);
-				vKey = propKeyRes.resolved;
+				if (typeof propKeyRes === 'undefined') throw 'Could not resolve data: "' + vKey + '" to property';
+				vKey = propKeyRes;
 				observers = Resolver.mergeObservers(observers, propKeyRes.observers);
 			}
 			else if (PhantomResolver.regex().test(vKey))
 			{
 				var phKeyRes = PhantomResolver.toProperty(vKey, object, node);
+				if (typeof phKeyRes === 'undefined') throw 'Could not resolve data: "' + vKey + '" to phantom';
 				vKey = phKeyRes.resolved;
 				observers = Resolver.mergeObservers(observers, phKeyRes.observers);
 			}
@@ -98,30 +100,35 @@ export default class ObjectResolver extends Resolver {
 			else if (PropertyResolver.regex().test(vVal))
 			{
 				var propValRes = PropertyResolver.toProperty(vVal, object, node);
+				if (typeof propValRes === 'undefined') throw 'Could not resolve data: "' + vVal + '" to property';
 				vVal = propValRes.resolved;
 				observers = Resolver.mergeObservers(observers, propValRes.observers);
 			}
 			else if (PhantomResolver.regex().test(vVal))
 			{
 				var phValRes = PhantomResolver.toProperty(vVal, object, node);
+				if (typeof phValRes === 'undefined') throw 'Could not resolve data: "' + vVal + '" to phantom';
 				vVal = phValRes.resolved;
 				observers = Resolver.mergeObservers(observers, phValRes.observers);
 			}
 			else if (MethodResolver.regex().test(vVal))
 			{
 				var methValRes = MethodResolver.toMethod(vVal, object, node, delay);
+				if (typeof methValRes === 'undefined') throw 'Could not resolve data: "' + vVal + '" to method';
 				vVal = methValRes.resolved;
 				observers = Resolver.mergeObservers(observers, methValRes.observers);
 			}
 			else if (ArrayResolver.regex().test(vVal))
 			{
 				var arrValRes = ArrayResolver.toArray(vVal, object, node);
+				if (typeof arrValRes === 'undefined') throw 'Could not resolve data: "' + vVal + '" to array';
 				vVal = arrValRes.resolved;
 				observers = Resolver.mergeObservers(observers, arrValRes.observers);
 			}
 			else if (ObjectResolver.regex().test(vVal))
 			{
 				var objValRes = ObjectResolver.toObject(vVal, object, node);
+				if (typeof objValRes === 'undefined') throw 'Could not resolve data: "' + vVal + '" to object';
 				vVal = objValRes.resolved;
 				observers = Resolver.mergeObservers(observers, objValRes.observers);
 			}

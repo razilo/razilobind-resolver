@@ -75,30 +75,35 @@ export default class ArrayResolver extends Resolver {
 			else if (PropertyResolver.regex().test(values[ii]))
 			{
 				var propRes = PropertyResolver.toProperty(values[ii], object, node);
+				if (typeof propRes === 'undefined') throw 'Could not resolve data: "' + values[ii] + '" to property';
 				result.push(propRes.resolved);
 				observers = Resolver.mergeObservers(observers, propRes.observers);
 			}
 			else if (PhantomResolver.regex().test(values[ii]))
 			{
 				var phRes = PhantomResolver.toProperty(values[ii], object, node);
+				if (typeof phRes === 'undefined') throw 'Could not resolve data: "' + values[ii] + '" to phantom';
 				result.push(phRes.resolved);
 				observers = Resolver.mergeObservers(observers, phRes.observers);
 			}
 			else if (MethodResolver.regex().test(values[ii]))
 			{
 				var methRes = MethodResolver.toMethod(values[ii], object, node);
+				if (typeof methRes === 'undefined') throw 'Could not resolve data: "' + values[ii] + '" to method';
 				result.push(methRes.resolved);
 				observers = Resolver.mergeObservers(observers, methRes.observers);
 			}
 			else if (ArrayResolver.regex().test(values[ii]))
 			{
 				var arrRes = ArrayResolver.toArray(values[ii], object, node);
+				if (typeof arrRes === 'undefined') throw 'Could not resolve data: "' + values[ii] + '" to array';
 				result.push(arrRes.resolved);
 				observers = Resolver.mergeObservers(observers, arrRes.observers);
 			}
 			else if (ObjectResolver.regex().test(values[ii]))
 			{
 				var objRes = ObjectResolver.toObject(values[ii], object, node);
+				if (typeof objRes === 'undefined') throw 'Could not resolve data: "' + values[ii] + '" to object';
 				result.push(objRes.resolved);
 				observers = Resolver.mergeObservers(observers, objRes.observers);
 			}
