@@ -1,6 +1,6 @@
 {
 	"name": "razilobind-resolver",
-	"version": "1.0.6",
+	"version": "1.0.7",
 	"description": "Resolvers for ES6 JS/HTML binding library for creating cynamic web applications through HTML attribtue binding",
 	"author": "Paul Smith (smiffy6969)",
 	"homepage": "http://bind.razilo.net",
