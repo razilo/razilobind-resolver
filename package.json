@@ -1,14 +1,14 @@
 {
 	"name": "razilobind-resolver",
-	"version": "1.0.5",
+	"version": "1.0.6",
 	"description": "Resolvers for ES6 JS/HTML binding library for creating cynamic web applications through HTML attribtue binding",
 	"author": "Paul Smith (smiffy6969)",
 	"homepage": "http://bind.razilo.net",
 	"dependencies": {
-		"razilobind-core": "^1.0.5"
+		"razilobind-core": "^1.0.6"
 	},
 	"devDependencies": {},
 	"browserify": {
-      "transform": [["babelify", { "presets": ["es2015"] }]]
+      "transform": [["babelify", { "presets": ["es2015-loose"] }]]
     }
 }
