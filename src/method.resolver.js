@@ -113,6 +113,6 @@ export default class MethodResolver extends Resolver {
 		}
 
 		// for event binders... return method instead of running it
-		return {resolved: !!delay ? {method: method, values: values} : method.apply(this, values), observers: observers};
+		return {resolved: !!delay ? {method: method, values: values} : method.apply(object, values), observers: observers};
 	}
 }
