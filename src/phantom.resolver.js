@@ -68,9 +68,10 @@ export default class PhantomResolver extends Resolver {
 		if (keyName.indexOf('$') !== 0) keyName = '$' + keyName;
 		if (valueName.indexOf('$') !== 0) valueName = '$' + valueName;
 
-		// lets resolve phantom data, check first part of data for phantom name
+		// lets resolve phantom data name, check first part of data for phantom name
 		var pName = data.split(/\.|\[/)[0];
-		var pProperty = data.length > pName.length ? data.substring(pName.length + 1, data.length) : undefined;
+
+		// now we can analyse it and turn it into the actual object path if needed
 		if (pName == keyName) result.resolved = sniffed.phantom.iterationKey;
 		else if (pName == valueName)
 		{
@@ -81,21 +82,14 @@ export default class PhantomResolver extends Resolver {
 				for (var key in sniffed.phantom.observers) result.observers.push(sniffed.phantom.observers[key]);
 				result.observers[result.observers.length -1] = result.observers[result.observers.length -1] + '.' + sniffed.phantom.iterationKey;
 
-				// get live value from model
-				var obsParts = result.observers[result.observers.length -1].split('.');
-				result.resolved = object[obsParts[0]];
-				for (var i = 1; i < obsParts.length; i++) result.resolved = result.resolved[obsParts[i]];
+				// convert phantom to property iteration and resolve
+				var propRes = PropertyResolver.toProperty(result.observers[result.observers.length -1] + data.substring(pName.length, data.length), object);
 
-				// resolve properties on phantom and collect observers
-				if (pProperty)
+				result.resolved = typeof propRes.resolved !== 'undefined' ? propRes.resolved : undefined;
+				if (propRes.observers.length > 0)
 				{
-					var propRes = PropertyResolver.toProperty(pProperty, result.resolved);
-					result.resolved = typeof propRes.resolved !== 'undefined' ? propRes.resolved : undefined;
-					if (propRes.observers.length > 0)
-					{
-						propRes.observers[propRes.observers.length -1] = result.observers[result.observers.length -1] + '.' + propRes.observers[propRes.observers.length -1];
-						for (var key2 in propRes.observers) result.observers.push(propRes.observers[key2]);
-					}
+					propRes.observers[propRes.observers.length -1] = result.observers[result.observers.length -1] + '.' + propRes.observers[propRes.observers.length -1];
+					for (var key2 in propRes.observers) result.observers.push(propRes.observers[key2]);
 				}
 			}
 			else result.resolved = sniffed.phantom.initialValue; // fugees (one-time!)
