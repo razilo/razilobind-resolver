@@ -54,7 +54,7 @@ export default class PhantomResolver extends Resolver {
 
 		// find closest phantom up nodes
 		var sniffed = node;
-		while (sniffed && !sniffed.razilobind && !sniffed.phantom)
+		while (sniffed && !sniffed.phantom && sniffed.tagName !== 'BODY')
 		{
 			if (sniffed.phantom && (!sniffed.phantom.keyName || sniffed.phantom.keyName == data)) break;
 			if (sniffed.phantom && (!sniffed.phantom.valueName || sniffed.phantom.valueName == data)) break;
