@@ -60,6 +60,7 @@ export default class PhantomResolver extends Resolver {
 			if (sniffed.phantom && (!sniffed.phantom.valueName || sniffed.phantom.valueName == data)) break;
 			sniffed = sniffed.parentNode;
 		}
+
 		if (!sniffed || !sniffed.phantom) return result;
 
 		// resolve key and value names, else default (force $ in front)
@@ -88,8 +89,7 @@ export default class PhantomResolver extends Resolver {
 				result.resolved = typeof propRes.resolved !== 'undefined' ? propRes.resolved : undefined;
 				if (propRes.observers.length > 0)
 				{
-					propRes.observers[propRes.observers.length -1] = result.observers[result.observers.length -1] + '.' + propRes.observers[propRes.observers.length -1];
-					for (var key2 in propRes.observers) result.observers.push(propRes.observers[key2]);
+					for (var key2 in propRes.observers) if (result.observers.indexOf(propRes.observers[key2]) < 0) result.observers.push(propRes.observers[key2]);
 				}
 			}
 			else result.resolved = sniffed.phantom.initialValue; // fugees (one-time!)
