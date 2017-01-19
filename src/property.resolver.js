@@ -76,14 +76,14 @@ export default class PropertyResolver extends Resolver {
 				{
 					// index
 					let key = parseInt(values[ii].replace(/\[|\]/g, '').trim());
-					result = result[key];
+					result = !result ? undefined : result[key];
 					observable += '.' + key;
 				}
 				else if (/^\[\s*\'(.*)\'\s*\]$/.test(values[ii]))
 				{
 					// key
 					let key = values[ii].replace(/\'|\[|\]/g, '').trim();
-					result = result[key];
+					result = !result ? undefined : result[key];
 					observable += '.' + key;
 				}
 				else if (PhantomResolver.regex().test(values[ii].substring(1, values[ii].length -1)))
@@ -96,7 +96,7 @@ export default class PropertyResolver extends Resolver {
 				else
 				{
 					var propRes = PropertyResolver.toProperty(values[ii].substring(1, values[ii].length -1), object, node);
-					result = propRes.resolved ? result[propRes.resolved] : undefined;
+					result = propRes.resolved && result ? result[propRes.resolved] : undefined;
 					observable += '.' + propRes.resolved;
 					observers = Resolver.mergeObservers(observers, propRes.observers);
 				}
@@ -104,12 +104,12 @@ export default class PropertyResolver extends Resolver {
 			else
 			{
 				result = result ? result[values[ii]] : undefined; // removing array items
-				if (typeof result !== 'undefined') observable += '.' + values[ii];
+				observable += '.' + values[ii];
 			}
-		}
 
-		// compact observable path to any other observables found
-		if (observable)	observers.push(observable.charAt(0) === '.' ? observable.substring(1, observable.length) : observable);
+			// compact observable path to any other observables found
+			if (observable)	observers.push(observable.charAt(0) === '.' ? observable.substring(1, observable.length) : observable);
+		}
 
 		return {resolved: result, observers: observers};
 	}
