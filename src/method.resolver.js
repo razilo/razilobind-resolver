@@ -59,6 +59,7 @@ export default class MethodResolver extends Resolver {
 		// get the bit between ()
 		var val = data.substring(data.indexOf('(') +1, data.length -1);
 
+
 		// resolve method name
 		if (!PropertyResolver.regex().test(key)) return undefined;
 		var resolver = PropertyResolver.toProperty(key, object, node);
@@ -81,6 +82,8 @@ export default class MethodResolver extends Resolver {
 		// resolve each split data
 		for (var ii = 0; ii < values.length; ii++)
 		{
+			values[ii] = values[ii].trim();
+
 			// resolve value
 			if (BooleanResolver.regex().test(values[ii])) values[ii] = BooleanResolver.toBoolean(values[ii]).resolved;
 			else if (StringResolver.regex().test(values[ii])) values[ii] = StringResolver.toString(values[ii]).resolved;

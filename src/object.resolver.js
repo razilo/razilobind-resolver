@@ -57,16 +57,18 @@ export default class ObjectResolver extends Resolver {
 		var values = [parts[0]];
 		for (var i = 1; i < parts.length; i++)
 		{
+			var rb = (values[values.length - 1].match(/\(/g) || []).length == (values[values.length - 1].match(/\)/g) || []).length;
 			var sb = (values[values.length - 1].match(/\[/g) || []).length == (values[values.length - 1].match(/\]/g) || []).length;
 			var mb = (values[values.length - 1].match(/\{/g) || []).length == (values[values.length - 1].match(/\}/g) || []).length;
 
-			if (sb && mb) values[values.length] = parts[i];
+			if (rb && sb && mb) values[values.length] = parts[i];
 			else values[values.length - 1] += ',' + parts[i];
 		}
 
 		// work through seperated data resolving or pushing for further analysis
 		var observers = [];
 		var result = [];
+
 		for (var ii = 0; ii < values.length; ii++)
 		{
 			values[ii] = values[ii].trim();
