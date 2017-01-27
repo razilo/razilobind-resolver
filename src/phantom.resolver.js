@@ -36,7 +36,7 @@ export default class PhantomResolver extends Resolver {
 	 * @return object regex The regex used to validate if of type or not
 	 */
 	static regex() {
-		return /^\${1}[a-zA-Z]{1}[a-zA-Z0-9_]+((\.[a-zA-Z]{1}[a-zA-Z0-9_]+)|(\[([0-9]+|[a-zA-Z_]{1}[a-zA-Z0-9_.\[\'\]]+)\])|(\[\'[^\[\]\']+\'\]))*$/;
+		return /^\${1}[a-zA-Z]{1}[a-zA-Z0-9_]+((\.[a-zA-Z]{1}[a-zA-Z0-9_]+)|(\[([0-9]+|\$?[a-zA-Z_]{1}[a-zA-Z0-9_.\[\'\]]+)\])|(\[\'[^\[\]\']+\'\]))*$/;
 	}
 
 	/**
@@ -79,11 +79,13 @@ export default class PhantomResolver extends Resolver {
 	        }
 	        result.observers.push(name + '.' + sniffed.phantom.iterationKey);
 
-	        var propRes = PropertyResolver.toProperty(name + '.' + sniffed.phantom.iterationKey, object);
+			// get actual from initial phantom value
+	        var propRes = PropertyResolver.toProperty(name + '.' + sniffed.phantom.iterationKey, object, node);
 	        result.resolved = typeof propRes.resolved !== 'undefined' ? propRes.resolved : undefined;
 
+			// now resolve property
 	        if (propRes.observers.length > 0) for (var key2 in propRes.observers) if (result.observers.indexOf(propRes.observers[key2]) < 0) result.observers.push(propRes.observers[key2]);
-	        if (dataPath.length > 0) result = PropertyResolver.toProperty(name + '.' + sniffed.phantom.iterationKey + dataPath, object);
+	        if (dataPath.length > 0) result = PropertyResolver.toProperty(name + '.' + sniffed.phantom.iterationKey + dataPath, object, node);
 	    }
 
 	    return result;

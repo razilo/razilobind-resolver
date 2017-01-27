@@ -1,5 +1,5 @@
 {
-  "version": "1.1.4",
+  "version": "1.1.5",
   "name": "razilobind-resolver",
   "description": "Resolvers for ES6 JS/HTML binding library for creating cynamic web applications through HTML attribtue binding",
   "homepage": "http://bind.razilo.net",
